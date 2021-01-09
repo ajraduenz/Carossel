@@ -1,2 +1,3 @@
 # Carossel
  
+Uso livre :)'

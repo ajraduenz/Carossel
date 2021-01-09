@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="carousel-wrapper">
+        <div class="carousel">
+            <div class="outer-carousel-photo">
+                <img class="carousel_foto initial"
+                    src="https://i.picsum.photos/id/862/660/660.jpg?hmac=fCq7jFv6-F3uEpDFb0Va9PTDEQ2uwygK9XWYdApwh4w">
+            </div>
+            <div class="outer-carousel-photo">
+                <img class="carousel_foto"
+                    src="https://i.picsum.photos/id/487/660/660.jpg?hmac=C4VHq2JwbihpdhXTfSWKI6AJ4jQTzQfV9EOPuzQ4PIY">
+            </div>
+            <div class="outer-carousel-photo">
+                <img class="carousel_foto"
+                    src="https://i.picsum.photos/id/997/660/660.jpg?hmac=H8Pl4Ds0N_Tl_o1B6R6zdKKsKbTr0nqyQPKb7zlvkwg">
+            </div>
+            <div class="outer-carousel-photo">
+                <img class="carousel_foto"
+                    src="https://i.picsum.photos/id/544/660/660.jpg?hmac=A4pIlEhcvBlnEW6tJG6EZedI8LIwgqE7KBmT3Q2cBFA">
+            </div>
+            <div class="outer-carousel-photo">
+                <img class="carousel_foto"
+                    src="https://i.picsum.photos/id/823/660/660.jpg?hmac=DWRGlBUg4C4gUo0M924_lg3Y6TZWtoFswQSTOM_KkXA">
+            </div>
+            <div class="outer-carousel-photo">
+                <img class="carousel_foto"
+                    src="https://i.picsum.photos/id/974/660/660.jpg?hmac=tL1YtAdDhXhbMhbccw7uJlHnIgtAiBsoOQzXJxWFL_4">
+            </div>
+            <div class="outer-carousel-photo">
+                <img class="carousel_foto"
+                    src="https://i.picsum.photos/id/302/660/660.jpg?hmac=E-pzfnBW1gcAhjIAiSFRTeNyNuFNlQBi6qh9x4djuzk">
+            </div>
+        </div>
+        <div class="next-prev-c prevc">❮</div>
+        <div class="next-prev-c nextc">❯</div>
+    </div>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: rgb(11, 109, 109);
+            margin: 0;
+            padding: 0;
+        }
+
+        .carousel-wrapper {
+            overflow: hidden;
+            position: relative;
+            margin: auto;
+        }
+
+        .outer-carousel-photo {
+            transition: left 450ms;
+        }
+
+        .carousel {
+            height: 300px;
+        }
+
+        .outer-carousel-photo {
+            position: absolute;
+        }
+
+        .carousel_foto {
+            height: 300px;
+            width: 300px;
+        }
+
+        .next-prev-c {
+            position: absolute;
+            top: 45%;
+            color: #fff;
+            background-color: rgba(0, 0, 0, 0.479);
+            padding: 10px;
+            font-size: 20px;
+            cursor: pointer;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        }
+
+        .next-prev-c:hover {
+            background-color: rgba(0, 0, 0, 0.800);
+        }
+
+        .prevc {
+            border-radius: 0 25% 25% 0;
+            left: 0;
+        }
+
+        .nextc {
+            border-radius: 25% 0 0 25%;
+            right: 0;
+        }
+    </style>
+    <script>
+        var numeroImgs = 3
+        var carouselWrapper = document.querySelector('.carousel-wrapper')
+        var carousel = document.querySelector('.carousel')
+        var todasImagens = document.querySelectorAll('.outer-carousel-photo')
+        var larguraImagem = todasImagens[0].offsetWidth
+        var larguraCarousel = larguraImagem * todasImagens.length
+        for (i = 0; i < todasImagens.length; i++) {
+            todasImagens[i].style.left = `${(larguraImagem * i - larguraImagem)}px`
+        }
+        document.querySelector(".prevc").addEventListener('click', botaoPrev)
+        document.querySelector(".nextc").addEventListener('click', botaoNext)
+        carouselWrapper.style.width = `${numeroImgs * larguraImagem}px`
+        console.log(Number(carouselWrapper.style.width.replace("px", "")))
+        console.log(window.outerWidth)
+        while (Number(carouselWrapper.style.width.replace("px", "")) > window.outerWidth) {
+            numeroImgs -= 1
+            carouselWrapper.style.width = `${numeroImgs * larguraImagem}px`
+        }
+        function botaoPrev() {
+            for (i = 0; i < todasImagens.length; i++) {
+                todasImagens[i].style.left = `${Number(todasImagens[i].style.left.replace("px", "")) - larguraImagem}px`
+                verLoop(i)
+            }
+            document.querySelector(".prevc").removeEventListener('click', botaoPrev)
+            setTimeout(function () { document.querySelector(".prevc").addEventListener('click', botaoPrev); }, 500);
+        }
+        function botaoNext() {
+            for (i = 0; i < todasImagens.length; i++) {
+                todasImagens[i].style.left = `${Number(todasImagens[i].style.left.replace("px", "")) + larguraImagem}px`
+                verLoop(i)
+            }
+            document.querySelector(".nextc").removeEventListener('click', botaoNext)
+            setTimeout(function () { document.querySelector(".nextc").addEventListener('click', botaoNext); }, 500);
+        }
+        function verLoop(i) {
+            valorPosicao = todasImagens[i].style.left.replace("px", "")
+            if (valorPosicao < 0 - larguraImagem) {
+                todasImagens[i].style.left = `${larguraCarousel - larguraImagem * 2}px`
+            }
+            if (valorPosicao > larguraCarousel - larguraImagem * 2) {
+                todasImagens[i].style.left = `${0 - larguraImagem}px`
+            }
+
+
+            if (valorPosicao < 0 - larguraImagem || valorPosicao > larguraCarousel - larguraImagem * 2) {
+                todasImagens[i].style.opacity = "0"
+            } else {
+                todasImagens[i].style.opacity = "1"
+            }
+
+        }
+    </script>
+</body>
+
+</html>
